@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Stock Manager</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
+      background-color: #f8f8f8;
+    }
+    h1 {
+      margin-bottom: 40px;
+    }
+    button {
+      padding: 15px 30px;
+      margin: 10px;
+      font-size: 18px;
+      border: none;
+      background-color: #4CAF50;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    #message {
+      margin-top: 30px;
+      font-size: 20px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <h1>Manage Product Stock</h1>
+  <button onclick="decreaseStock('Product A')">Decrease Product A</button>
+  <button onclick="decreaseStock('Product B')">Decrease Product B</button>
+  <p id="message"></p>
+
+  <script>
+    const scriptURL = 'YOUR_WEB_APP_URL_HERE'; // Replace this with your Apps Script Web App URL
+
+    function decreaseStock(productName) {
+      fetch(scriptURL, {
+        method: 'POST',
+        body: JSON.stringify({ product: productName }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(response => response.text())
+      .then(text => {
+        document.getElementById("message").innerText = text;
+      })
+      .catch(error => {
+        document.getElementById("message").innerText = "Error: " + error;
+      });
+    }
+  </script>
+</body>
+</html>
