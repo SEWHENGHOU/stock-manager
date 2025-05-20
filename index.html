@@ -21,21 +21,31 @@
 
   <script>
     async function updateStock(amount) {
-      const productId = document.getElementById("productId").value.trim();
-      if (!productId) {
-        document.getElementById("result").innerText = "Please enter a product ID.";
-        return;
-      }
+  const productId = document.getElementById("productId").value.trim();
+  if (!productId) {
+    document.getElementById("result").innerText = "Please enter a product ID.";
+    return;
+  }
 
-      const response = await fetch("https://script.google.com/macros/s/AKfycbyoRi9bXPL2G3CkgTRnSaKaS73wnPIhmGbdI4jmSkU8ndsmaQgWrHwjumhWqvEa6JLW/exec", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ productId: productId, quantity: amount })
-      });
+  const formData = new URLSearchParams();
+  formData.append("productId", productId);
+  formData.append("quantity", amount);
 
-      const text = await response.text();
-      document.getElementById("result").innerText = text;
-    }
+  try {
+    const response = await fetch("https://script.google.com/macros/s/AKfycbyoRi9bXPL2G3CkgTRnSaKaS73wnPIhmGbdI4jmSkU8ndsmaQgWrHwjumhWqvEa6JLW/exec", {
+      method: "POST",
+      body: formData
+    });
+
+    const text = await response.text();
+    console.log("Response:", text);
+    document.getElementById("result").innerText = text;
+  } catch (error) {
+    console.error("Fetch failed:", error);
+    document.getElementById("result").innerText = "Request error.";
+  }
+}
+
   </script>
 </body>
 </html>
